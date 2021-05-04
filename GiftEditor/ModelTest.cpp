@@ -6,6 +6,31 @@ ModelTest::ModelTest()
 
 }
 
+QString ModelTest::sendQuestType(int index) {
+    if (vectorQuest.at(index)->questionType == MultipleChoise) {
+        return "Multiple Choise";
+    }
+    if (vectorQuest.at(index)->questionType == ShortAnswer) {
+        return "Short Answer";
+    }
+    if (vectorQuest.at(index)->questionType == MissedWord) {
+        return "Missed Word";
+    }
+    if (vectorQuest.at(index)->questionType == TrueFalse) {
+        return "True False";
+    }
+    if (vectorQuest.at(index)->questionType == MatchingSelection) {
+        return "Matching Selection";
+    }
+    if (vectorQuest.at(index)->questionType == NumericAnswer) {
+        return "Numeric Answer";
+    }
+    if (vectorQuest.at(index)->questionType == Essay) {
+        return "Essay";
+    }
+    return "Error";
+}
+
 void ModelTest::attachData(QStringList arrayQuest) {
     for (int i = 0; i < arrayQuest.count()-1; i=i+4)
     {
@@ -13,6 +38,50 @@ void ModelTest::attachData(QStringList arrayQuest) {
     }
     qDebug() << "Зашли в модель";
     printQuestions();
+}
+
+void ModelTest::editQuest(int index, QString qType, QStringList data) {
+    bool found = false;
+    if (index <= vectorQuest.size()) {
+        QString title = data[0], text = data[1], answer = data[2];
+        if (qType == "Multiple Choise") {
+            QStringList answerList;
+            for (int i = 2; i < data.count(); i++) {
+                answerList.push_back(data[i]);
+            }
+            addMultipleChoiseQuest(title,text, answerList);
+            found = true;
+        }
+        if (qType == "Short Answer") {
+            addShortAnswerQuest(title,text,answer);
+            found = true;
+        }
+        if (qType == "True False") {
+            addTrueFalseQuest(title,text,answer);
+            found = true;
+        }
+        if (qType == "Matching Selection") {
+            QStringList answerList;
+            for (int i = 2; i < data.count(); i++) {
+                answerList.push_back(data[i]);
+            }
+            addMatchingSelectionQuest(title,text,answerList);
+            found = true;
+        }
+        if (qType == "Numeric Answer") {
+            addNumericAnswerQuest(title,text,answer);
+            found = true;
+        }
+        if (qType == "Essay") {
+            addEssayQuest(title,text);
+            found = true;
+        }
+    }
+    if (found) {
+        std::swap(vectorQuest[vectorQuest.size()],vectorQuest[index]);
+        vectorQuest.erase(vectorQuest.end());
+    }
+
 }
 
 //Настройка и добавление нового вопроса
@@ -76,16 +145,71 @@ void ModelTest::addEssayQuest(QString qTitle, QString qText){
     setUpTest(qTitle, qText, question, Essay);
 }
 
+QStringList ModelTest::sendNumericAnswerQuest(Test *newTest) {
+    QStringList resultList;
+    resultList.push_back(newTest->title);
+    resultList.push_back(newTest->text);
+    QuestNumericAnswer *newQuest = static_cast<QuestNumericAnswer*>(newTest);
+    resultList.push_back(newQuest->answer);
+    return resultList;
+}
+
+QStringList ModelTest::sendEssayQuest(Test *newTest) {
+    QStringList resultList;
+    resultList.push_back(newTest->title);
+    resultList.push_back(newTest->text);
+    return resultList;
+}
+
+QStringList ModelTest::sendMatchingSelectionQuest(Test *newTest) {
+    QStringList resultList;
+    resultList.push_back(newTest->title);
+    resultList.push_back(newTest->text);
+    QuestMatchingSelection *newQuest = static_cast< QuestMatchingSelection*>(newTest);
+    for (auto &element: newQuest->matchesArray) {
+        resultList.push_back(element);
+    }
+    return resultList;
+}
+
+QStringList ModelTest::sendTrueFalseQuest(Test *newTest) {
+    QStringList resultList;
+    resultList.push_back(newTest->title);
+    resultList.push_back(newTest->text);
+    QuestTrueFalse *newQuest = static_cast<QuestTrueFalse*>(newTest);
+    resultList.push_back(newQuest->answer);
+    return resultList;
+}
+
+QStringList ModelTest::sendShortAnswerQuest(Test *newTest) {
+    QStringList resultList;
+    resultList.push_back(newTest->title);
+    resultList.push_back(newTest->text);
+    QuestShortAnswer *newQuest = static_cast<QuestShortAnswer*>(newTest);
+    resultList.push_back(newQuest->answer);
+    return resultList;
+}
+
+QStringList ModelTest::sendMultipleChoiseQuest(Test * newTest){
+    QStringList resultList;
+    resultList.push_back(newTest->title);
+    resultList.push_back(newTest->text);
+    QuestMultipleChoise *newQuest = static_cast<QuestMultipleChoise*>(newTest);
+    for (auto &element: newQuest->answers) {
+        resultList.push_back(element);
+    }
+    return resultList;
+}
 
 QStringList ModelTest::requestData(){
     QString total;
     QStringList resultList;
     for (auto const &element: vectorQuest) {
         if (element->questionType == MultipleChoise) {
-            total = total + "::" + element->title + "::" + element->text + " {\n";
-            QuestMultipleChoise *newQuest = static_cast<QuestMultipleChoise*>(element);
-            for (auto const &listElement: newQuest->answers){
-            total = total + listElement + "\n";
+            QStringList buf = sendMultipleChoiseQuest(element);
+            total = total + "::" + buf[0] + "::" + buf[1] + " {\n";
+            for (int i = 2; i < buf.count(); i++) {
+                total = total + buf[i] + "\n";
             }
             total = total + "}" + "\n";
         }
@@ -95,31 +219,32 @@ QStringList ModelTest::requestData(){
             //total = total + newQuest->answer;
         }
         if (element->questionType == ShortAnswer) {
-            total = total + "::" + element->title + "::" + element->text + " {\n";
-            QuestShortAnswer *newQuest = static_cast<QuestShortAnswer*>(element);
-            total = total + newQuest->answer + "\n}" + "\n";
+            QStringList buf = sendShortAnswerQuest(element);
+            total = total + "::" + buf[0] + "::" + buf[1]+ " {\n";
+            total = total + buf[2] + "\n}" + "\n";
         }
         if (element->questionType == TrueFalse) {
-            total = total + "::" + element->title + "::" + element->text + " {";
-            QuestTrueFalse *newQuest = static_cast<QuestTrueFalse*>(element);
-            newQuest->answer = newQuest->answer.trimmed();
-            total = total + newQuest->answer + "}\n";
+            QStringList buf = sendTrueFalseQuest(element);
+            total = total + "::" + buf[0] + "::" + buf[1] + " {";
+            buf[2] = buf[2].trimmed();
+            total = total + buf[2] + "}\n";
         }
         if (element->questionType == MatchingSelection) {
-            total = total + "::" + element->title + "::" + element->text + " {\n";
-            QuestMatchingSelection *newQuest = static_cast< QuestMatchingSelection*>(element);
-            for (int i = 0; i < newQuest->matchesArray.count(); i=i+2) {
-                total = total + "=" + newQuest->matchesArray[i] + " -> " + newQuest->matchesArray[i+1] + "\n";
+            QStringList buf = sendMatchingSelectionQuest(element);
+            total = total + "::" + buf[0] + "::" + buf[1] + " {\n";
+            for (int i = 2; i < buf.count(); i=i+2) {
+                total = total + "=" + buf[i] + " -> " + buf[i+1] + "\n";
             }
             total = total + "}\n";
         }
         if (element->questionType == NumericAnswer) {
-            total = total + "::" + element->title + "::" + element->text + " {";
-            QuestNumericAnswer *newQuest = static_cast< QuestNumericAnswer*>(element);
-            total = total + newQuest->answer + "}\n";
+            QStringList buf = sendNumericAnswerQuest(element);
+            total = total + "::" + buf[0] + "::" + buf[1] + " {";
+            total = total + buf[2] + "}\n";
         }
         if (element->questionType == Essay) {
-            total = total + "::" + element->title + "::" + element->text + " {}\n";
+            QStringList buf = sendEssayQuest(element);
+            total = total + "::" + buf[0] + "::" + buf[1] + " {}\n";
         }
         resultList.push_back(total);
         total = "";
@@ -208,8 +333,8 @@ void ModelTest::printQuestions() {
             }
         }
         if (element->questionType == MissedWord) {
-            qDebug() << element->title << element->text;
-            QuestMissedWord *newQuest = static_cast<QuestMissedWord*>(element);
+            //qDebug() << element->title << element->text;
+            //QuestMissedWord *newQuest = static_cast<QuestMissedWord*>(element);
             //qDebug() << newQuest->answer;
         }
         if (element->questionType == ShortAnswer) {
@@ -240,26 +365,4 @@ void ModelTest::printQuestions() {
         }
     }
 }
-void ModelTest::addToVectorQuest() {
-    QuestMatchingSelection* newMS = new QuestMatchingSelection();
-    QStringList array = {"1","2","3"};
-    //newMS->matchesArray = array;
-    qDebug() << "Инициализировали сущность MS";
-    //Test* question = static_cast<QuestMatchingSelection*>(newTest);
-    Test* question = static_cast<Test*>(newMS);
-    question->title = "Test title";
-    question->text = "Test text";
-    qDebug() << "Инициализировали сущность Test";
-    vectorQuest.push_back(question);
-    qDebug() << "Добавили в вектор";
-    qDebug() << vectorQuest.at(0);
-    qDebug() << vectorQuest.at(0)->title;
-    qDebug() << vectorQuest.at(0)->text;
-    qDebug() << "Вывели вектор Test";
-    newMS = static_cast<QuestMatchingSelection*>(vectorQuest.at(0));
-    //qDebug() << newMS->matchesArray;
-    qDebug() << "Вывели вектор MS";
-    //QuestTest::QuestTrueFalse *newQuest = new QuestTest::QuestTrueFalse;
-    //newQuest->name = "Вставьте пропущенное слово";
-    //questVector.push_back(newQuest);
-}
+

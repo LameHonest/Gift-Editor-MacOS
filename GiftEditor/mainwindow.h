@@ -50,6 +50,8 @@ private slots:
 
     void on_action_2_triggered();
 
+    void on_listWidget_itemDoubleClicked(QListWidgetItem *item);
+
 private:
     void modelClear();
     void updateListWidget ();

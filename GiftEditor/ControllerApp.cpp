@@ -8,6 +8,14 @@ ControllerApp::ControllerApp()
 
 }
 
+void ControllerApp::editQuest(int index, QString qType, QStringList data) {
+        newModelTest->editQuest(index,qType,data);
+}
+
+QString ControllerApp::requestQuestType(int index) {
+   return newModelTest->sendQuestType(index);
+}
+
 QStringList ControllerApp::prepareDataModel(QString str) {
     QStringList list = str.split("{!SPLIT_CARACT!}");
     QString result, questType, questTitle, questText, questAnswers;
@@ -98,6 +106,7 @@ void ControllerApp::sendModelMissedWord(){
 void ControllerApp::sendModelShortAnswer(QString qTitle, QString qText, QString qAnswers) {
     newModelTest->addShortAnswerQuest(qTitle,qText,qAnswers);
 }
+
 void ControllerApp::sendModelMultipleChoise(QString qTitle, QString qText, QString qAnswers){
     QStringList answersList;
     QString results;
@@ -121,7 +130,6 @@ void ControllerApp::sendModelMultipleChoise(QString qTitle, QString qText, QStri
     }
     newModelTest->addMultipleChoiseQuest(qTitle, qText, answersList);
 }
-
 
 QStringList ControllerApp::sendData(QString str) {
     QStringList strList = str.split("{!SPLIT_CARACT!}");

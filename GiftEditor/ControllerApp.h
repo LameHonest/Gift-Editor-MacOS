@@ -1,7 +1,6 @@
 #ifndef APPCONTROLLER_H
 #define APPCONTROLLER_H
 
-//#include "globals.h"
 #include "ControllerParserFile.h"
 #include <QFile>
 #include <QVector>
@@ -14,8 +13,10 @@ public:
     QStringList sendData(QString);
     QStringList prepareDataModel(QString);
     void acceptQuest (QString);
+    QString requestQuestType(int index);
     QStringList requestModelData();
     void clearModel();
+    void editQuest(int index, QString qType,QStringList data);
 private:
     void sendModelMultipleChoise(QString,QString,QString);
     void sendModelMissedWord();

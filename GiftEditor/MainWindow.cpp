@@ -103,6 +103,42 @@ void MainWindow::addItemsToView(QStringList strList) {
     }
 
 }
+
+void MainWindow::on_listWidget_itemDoubleClicked(QListWidgetItem *item){
+    ControllerApp *newController = new ControllerApp();
+    QString qType = newController->requestQuestType(ui->listWidget->row(item));
+    if (qType == "Multiple Choise") {
+        MultipleChoiseWindow *newMPWindow = new MultipleChoiseWindow();
+        newMPWindow->exec();
+        updateListWidget();
+    }
+    if (qType == "Short Answer") {
+        ShortAnswerDialog *newSAWindow = new ShortAnswerDialog();
+        newSAWindow->exec();
+        updateListWidget();
+    }
+    if (qType == "True False") {
+        TrueFalseDialog *newTFWindow = new TrueFalseDialog();
+        newTFWindow->exec();
+        updateListWidget();
+    }
+    if (qType == "Matching Selection") {
+        MatchingSelectionDialog *newMSWindow = new MatchingSelectionDialog();
+        newMSWindow->exec();
+        updateListWidget();
+    }
+    if (qType == "Numeric Answer") {
+        NumericAnswerDialog *newNAWindow = new NumericAnswerDialog();
+        newNAWindow->exec();
+        updateListWidget();
+    }
+    if (qType == "Essay") {
+        DialogEssay *newEWindow = new DialogEssay();
+        newEWindow->exec();
+        updateListWidget();
+    }
+}
+
 //Сохранить как
 void MainWindow::on_action_triggered()
 {

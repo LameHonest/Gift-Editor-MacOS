@@ -57,6 +57,10 @@ public:
 //Методы:
     QStringList requestData();
     void attachData(QStringList);
+
+    QString sendQuestType(int index);
+
+    //Добавление вопроса
     void addQuest(QString,QString,QString,QString);
     void addMultipleChoiseQuest(QString qTitle, QString qText, QStringList qAnswers);
  //    void addMissedWordQuest(QVector <QString>);
@@ -65,13 +69,25 @@ public:
     void addMatchingSelectionQuest(QString qTitle, QString qText, QStringList qAnswers);
     void addNumericAnswerQuest(QString qTitle, QString qText, QString qAnswer);
     void addEssayQuest(QString qTitle, QString qText);
+
+    //Редактирование вопросов
+    void editQuest(int index, QString qType, QStringList data);
+
+    //Отправка инвормации о вопросе
+    QStringList sendMultipleChoiseQuest(Test *);
+    //QStringList sendMissedWordQuest(int questIndex);
+    QStringList sendShortAnswerQuest(Test *);
+    QStringList sendTrueFalseQuest(Test *);
+    QStringList sendMatchingSelectionQuest(Test *);
+    QStringList sendNumericAnswerQuest(Test *);
+    QStringList sendEssayQuest(Test *);
+
 //Конец методов
 //Вектор, в котором будут храниться вопросы:
     std::vector<Test *> vectorQuest;
 
 private:
     void setUpTest(QString, QString, Test*, questType);
-    void addToVectorQuest();
     void getStructType ();
     void getQuestType();
     void printQuestions();
