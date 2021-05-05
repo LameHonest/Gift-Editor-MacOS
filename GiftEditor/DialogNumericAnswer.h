@@ -13,6 +13,9 @@ class NumericAnswerDialog : public QDialog
 
 public:
     explicit NumericAnswerDialog(QWidget *parent = nullptr);
+    bool editable = false;
+    int index = 0;
+    void setUpUI(QStringList data);
     ~NumericAnswerDialog();
 
 private slots:

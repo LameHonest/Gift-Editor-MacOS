@@ -13,6 +13,9 @@ class DialogEssay : public QDialog
 
 public:
     explicit DialogEssay(QWidget *parent = nullptr);
+    bool editable = false;
+    int index = 0;
+    void setUpUI(QStringList data);
     ~DialogEssay();
 
 private slots:

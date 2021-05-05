@@ -13,6 +13,9 @@ class ShortAnswerDialog : public QDialog
 
 public:
     explicit ShortAnswerDialog(QWidget *parent = nullptr);
+    bool editable = false;
+    int index = 0;
+    void setUpUI(QStringList data);
     ~ShortAnswerDialog();
 
 private:

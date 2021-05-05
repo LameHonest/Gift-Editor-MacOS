@@ -8,7 +8,12 @@ ControllerApp::ControllerApp()
 
 }
 
+QStringList ControllerApp::getQuestData(int index) {
+    return newModelTest->sendQuestByIndex(index);
+}
+
 void ControllerApp::editQuest(int index, QString qType, QStringList data) {
+
         newModelTest->editQuest(index,qType,data);
 }
 

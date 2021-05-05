@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Выбор соответсвия</string>
   </property>
   <widget class="QWidget" name="formLayoutWidget">
    <property name="geometry">
@@ -117,22 +117,22 @@
        <bool>false</bool>
       </attribute>
       <attribute name="horizontalHeaderCascadingSectionResizes">
-       <bool>false</bool>
+       <bool>true</bool>
       </attribute>
       <attribute name="horizontalHeaderDefaultSectionSize">
-       <number>280</number>
+       <number>300</number>
       </attribute>
       <attribute name="verticalHeaderVisible">
        <bool>false</bool>
       </attribute>
       <column>
        <property name="text">
-        <string>Левое соотвествие</string>
+        <string>Левое</string>
        </property>
       </column>
       <column>
        <property name="text">
-        <string>Правое соотвествие</string>
+        <string>Правое</string>
        </property>
       </column>
      </widget>

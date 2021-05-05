@@ -73,6 +73,9 @@ public:
     //Редактирование вопросов
     void editQuest(int index, QString qType, QStringList data);
 
+    //Получение вопроса по индексу
+    QStringList sendQuestByIndex(int index);
+
     //Отправка инвормации о вопросе
     QStringList sendMultipleChoiseQuest(Test *);
     //QStringList sendMissedWordQuest(int questIndex);

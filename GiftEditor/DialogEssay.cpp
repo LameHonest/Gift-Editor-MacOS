@@ -14,10 +14,22 @@ DialogEssay::~DialogEssay()
     delete ui;
 }
 
+void DialogEssay::setUpUI(QStringList data) {
+    ui->lineEdit->setText(data[0]);
+    ui->lineEdit_2->setText(data[1]);
+}
+
 void DialogEssay::on_pushButton_clicked()
 {
-    QString result = "Essay{!SPLIT_CARACT!}::" + ui->lineEdit->text() +"::" + ui->lineEdit_2->text() + "{} \n";
     ControllerApp *newAppController = new ControllerApp();
-    newAppController->acceptQuest(result);
+    if (editable) {
+            QStringList resultList;
+            resultList.push_back(ui->lineEdit->text());
+            resultList.push_back(ui->lineEdit_2->text());
+            resultList.push_back("");
+            newAppController->editQuest(index,"Essay", resultList);
+        } else {
+            newAppController->sendModelEssay(ui->lineEdit->text(), ui->lineEdit_2->text());
+        }
     this->close();
 }

@@ -15,6 +15,9 @@ class MultipleChoiseWindow : public QDialog
 
 public:
     explicit MultipleChoiseWindow(QWidget *parent = nullptr);
+    void setUpUi (QStringList data);
+    bool editable = false;
+    int index = 0;
     ~MultipleChoiseWindow();
 
 private slots:

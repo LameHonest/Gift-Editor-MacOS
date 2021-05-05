@@ -104,39 +104,56 @@ void MainWindow::addItemsToView(QStringList strList) {
 
 }
 
+//Редактирование вопросов
 void MainWindow::on_listWidget_itemDoubleClicked(QListWidgetItem *item){
     ControllerApp *newController = new ControllerApp();
-    QString qType = newController->requestQuestType(ui->listWidget->row(item));
+    int index = ui->listWidget->row(item);
+    QString qType = newController->requestQuestType(index);
+    QStringList data = newController->getQuestData(index);
     if (qType == "Multiple Choise") {
         MultipleChoiseWindow *newMPWindow = new MultipleChoiseWindow();
+        newMPWindow->editable = true;
+        newMPWindow->index = index;
+        newMPWindow->setUpUi(data);
         newMPWindow->exec();
-        updateListWidget();
     }
     if (qType == "Short Answer") {
         ShortAnswerDialog *newSAWindow = new ShortAnswerDialog();
+        newSAWindow->editable = true;
+        newSAWindow->index = index;
+        //newSAWindow->setUpUI(data);
         newSAWindow->exec();
-        updateListWidget();
     }
     if (qType == "True False") {
         TrueFalseDialog *newTFWindow = new TrueFalseDialog();
+        newTFWindow->editable = true;
+        newTFWindow->index = index;
+        newTFWindow->setUpUI(data);
         newTFWindow->exec();
-        updateListWidget();
     }
     if (qType == "Matching Selection") {
         MatchingSelectionDialog *newMSWindow = new MatchingSelectionDialog();
+        newMSWindow->editable = true;
+        newMSWindow->index = index;
+        newMSWindow->setUpUI(data);
         newMSWindow->exec();
-        updateListWidget();
     }
     if (qType == "Numeric Answer") {
         NumericAnswerDialog *newNAWindow = new NumericAnswerDialog();
+        newNAWindow->editable = true;
+        newNAWindow ->index = index;
+        newNAWindow->setUpUI(data);
         newNAWindow->exec();
-        updateListWidget();
     }
     if (qType == "Essay") {
         DialogEssay *newEWindow = new DialogEssay();
+        newEWindow->editable = true;
+        newEWindow->index = index;
+        newEWindow->setUpUI(data);
         newEWindow->exec();
-        updateListWidget();
     }
+
+    updateListWidget();
 }
 
 //Сохранить как

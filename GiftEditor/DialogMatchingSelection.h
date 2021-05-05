@@ -13,6 +13,9 @@ class MatchingSelectionDialog : public QDialog
 
 public:
     explicit MatchingSelectionDialog(QWidget *parent = nullptr);
+    bool editable = false;
+    int index = 0;
+    void setUpUI(QStringList data);
     ~MatchingSelectionDialog();
 
 private slots:

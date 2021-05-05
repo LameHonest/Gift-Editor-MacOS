@@ -13,6 +13,9 @@ class TrueFalseDialog : public QDialog
 
 public:
     explicit TrueFalseDialog(QWidget *parent = nullptr);
+    bool editable = false;
+    int index = 0;
+    void setUpUI(QStringList data);
     ~TrueFalseDialog();
 
 private slots:

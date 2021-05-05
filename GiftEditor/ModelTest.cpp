@@ -6,6 +6,32 @@ ModelTest::ModelTest()
 
 }
 
+QStringList ModelTest::sendQuestByIndex(int index) {
+    QStringList resultList;
+    if (vectorQuest.at(index)->questionType == MultipleChoise) {
+        return sendMultipleChoiseQuest(vectorQuest.at(index));
+    }
+    if (vectorQuest.at(index)->questionType == ShortAnswer) {
+        return sendShortAnswerQuest(vectorQuest.at(index));
+    }
+    if (vectorQuest.at(index)->questionType == MissedWord) {
+        //
+    }
+    if (vectorQuest.at(index)->questionType == TrueFalse) {
+        return sendTrueFalseQuest(vectorQuest.at(index));
+    }
+    if (vectorQuest.at(index)->questionType == MatchingSelection) {
+        return sendMatchingSelectionQuest(vectorQuest.at(index));
+    }
+    if (vectorQuest.at(index)->questionType == NumericAnswer) {
+        return sendNumericAnswerQuest(vectorQuest.at(index));
+    }
+    if (vectorQuest.at(index)->questionType == Essay) {
+        return sendEssayQuest(vectorQuest.at(index));
+    }
+    return resultList;
+}
+
 QString ModelTest::sendQuestType(int index) {
     if (vectorQuest.at(index)->questionType == MultipleChoise) {
         return "Multiple Choise";
@@ -78,10 +104,9 @@ void ModelTest::editQuest(int index, QString qType, QStringList data) {
         }
     }
     if (found) {
-        std::swap(vectorQuest[vectorQuest.size()],vectorQuest[index]);
-        vectorQuest.erase(vectorQuest.end());
+        std::swap(vectorQuest[vectorQuest.size() - 1],vectorQuest[index]);
+        vectorQuest.pop_back();
     }
-
 }
 
 //Настройка и добавление нового вопроса

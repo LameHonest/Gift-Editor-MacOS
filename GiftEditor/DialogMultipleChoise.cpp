@@ -15,6 +15,13 @@ MultipleChoiseWindow::~MultipleChoiseWindow()
     delete ui;
 }
 
+void MultipleChoiseWindow::setUpUi(QStringList data) {
+    ui->lineEdit->setText(data[0]);
+    ui->lineEdit_2->setText(data[1]);
+    for (int i = 2; i < data.count(); i++) {
+        ui->listWidget->addItem(data[i]);
+    }
+}
 
 void MultipleChoiseWindow::on_listWidget_itemDoubleClicked(QListWidgetItem *item)
 {
@@ -45,13 +52,22 @@ void MultipleChoiseWindow::on_pushButton_2_clicked()
 
 void MultipleChoiseWindow::on_pushButton_clicked()
 {
-    QString result = "Multiple Choise{!SPLIT_CARACT!}::" + ui->lineEdit->text() +"::" + ui->lineEdit_2->text() + "{ \n";
-    for (int i = 0; i < ui->listWidget->count(); i++) {
-           result = result + ui->listWidget->item(i)->text() + "\n";
-    }
-    result = result + "} \n";
-    qDebug() << result;
     ControllerApp *newAppController = new ControllerApp();
-    newAppController->acceptQuest(result);
+
+    if (editable) {
+        QStringList resultList;
+        resultList.push_back(ui->lineEdit->text());
+        resultList.push_back(ui->lineEdit_2->text());
+        for (int i = 0; i < ui->listWidget->count(); i ++) {
+            resultList.push_back(ui->listWidget->item(i)->text());
+        }
+        newAppController->editQuest(index,"Multiple Choise", resultList);
+    } else {
+        QString answers;
+        for (int i = 0; i < ui->listWidget->count(); i++) {
+            answers = answers + ui->listWidget->item(i)->text() + "\n";
+        }
+        newAppController->sendModelMultipleChoise(ui->lineEdit->text(), ui->lineEdit_2->text(), answers);
+    }
     this->close();
 }

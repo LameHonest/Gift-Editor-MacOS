@@ -13,6 +13,9 @@ class MissedWordDialog : public QDialog
 
 public:
     explicit MissedWordDialog(QWidget *parent = nullptr);
+    bool editable = false;
+    int index = 0;
+    void setUpUI(QStringList data);
     ~MissedWordDialog();
 
 private:

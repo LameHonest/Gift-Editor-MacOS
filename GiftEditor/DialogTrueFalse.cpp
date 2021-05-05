@@ -15,6 +15,16 @@ TrueFalseDialog::~TrueFalseDialog()
     delete ui;
 }
 
+void TrueFalseDialog::setUpUI(QStringList data) {
+    ui->lineEdit->setText(data[0]);
+    ui->lineEdit_2->setText(data[1]);
+    if (data[2] == "TRUE" || data[2] == " TRUE " || data[2] == "T" || data[2] == " T ") {
+        ui->checkBox_2->setCheckState(Qt::Checked);
+    }
+    if (data[2] == "FALSE" || data[2] == " FALSE " || data[2] == "F" || data[2] == " F ") {
+        ui->checkBox->setCheckState(Qt::Checked);
+    }
+}
 void TrueFalseDialog::on_checkBox_clicked()
 {
     if (ui->checkBox_2->isChecked()) {
@@ -32,15 +42,22 @@ void TrueFalseDialog::on_checkBox_2_clicked()
 void TrueFalseDialog::on_pushButton_clicked()
 {
     if (ui->checkBox->isChecked() || ui->checkBox_2->isChecked()) {
-    QString result = "True False{!SPLIT_CARACT!}::" + ui->lineEdit->text() +"::" + ui->lineEdit_2->text() + "{ \n";
-    if (ui->checkBox->isChecked()) {
-    result = result + "FALSE}\n";
-    } else {
-        result = result + "TRUE}\n";
-    }
-    qDebug() << result;
     ControllerApp *newAppController = new ControllerApp();
-    newAppController->acceptQuest(result);
+    QString result;
+    if (ui->checkBox->isChecked()) {
+    result = "FALSE";
+    } else {
+        result = "TRUE";
+    }
+    if (editable) {
+            QStringList resultList;
+            resultList.push_back(ui->lineEdit->text());
+            resultList.push_back(ui->lineEdit_2->text());
+            resultList.push_back(result);
+            newAppController->editQuest(index,"True False", resultList);
+        } else {
+            newAppController->sendModelTrueFalse(ui->lineEdit->text(), ui->lineEdit_2->text(), result);
+        }
     this->close();
     }
 }

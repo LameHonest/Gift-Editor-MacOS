@@ -9,15 +9,18 @@ class ControllerApp
 {
 public:
     ControllerApp();
+    //Парсинг файла
     QStringList parseFile(QFile &);
+    //?
     QStringList sendData(QString);
     QStringList prepareDataModel(QString);
     void acceptQuest (QString);
-    QString requestQuestType(int index);
+    //Работа с моделью
+    QStringList getQuestData(int index);//Содержимое вопроса
+    QString requestQuestType(int index);//Тип вопроса
     QStringList requestModelData();
-    void clearModel();
-    void editQuest(int index, QString qType,QStringList data);
-private:
+    void clearModel();//отчистка модели
+    void editQuest(int index, QString qType,QStringList data);//редактирование
     void sendModelMultipleChoise(QString,QString,QString);
     void sendModelMissedWord();
     void sendModelShortAnswer(QString, QString, QString);
