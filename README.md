@@ -4,7 +4,7 @@
 
   Double LMB click - edit elements.
   
-  LMB click - change state/select
+  LMB click - change state/select.
 
 2. Guide: 
 
