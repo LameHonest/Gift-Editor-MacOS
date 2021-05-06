@@ -11,7 +11,7 @@
 Use only UTF-8 codec for input .txt file.
 
 
-Between questions use \n
+Between questions use "\n".
 
 3. Example of GIFT test:
   
