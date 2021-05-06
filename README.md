@@ -6,8 +6,10 @@
 
 2. Guide: 
 
-  1. Use only UTF-8 codec for input .txt file.
-  2. Between questions use \n
+Use only UTF-8 codec for input .txt file.
+
+
+Between questions use \n
 
 3. Example of GIFT test:
   
